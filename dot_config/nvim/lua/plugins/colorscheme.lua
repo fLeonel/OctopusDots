@@ -33,6 +33,37 @@ return {
     --   end,
     -- },
     {
+      -- Tema principal: Dracula (igual que tmux, zellij y Alacritty)
+      -- URL: https://github.com/Mofiqul/dracula.nvim
+      "Mofiqul/dracula.nvim",
+      lazy = false,
+      priority = 1000,
+      opts = {
+        transparent_bg = true, -- deja ver la opacidad + blur de Alacritty
+        italic_comment = true,
+        show_end_of_buffer = false,
+        overrides = function(colors)
+          return {
+            NormalFloat = { bg = "NONE" },
+            FloatBorder = { fg = colors.purple, bg = "NONE" },
+            FloatTitle = { fg = colors.pink, bg = "NONE", bold = true },
+            LineNr = { fg = colors.comment, bg = "NONE" },
+            CursorLineNr = { fg = colors.yellow, bold = true },
+            SignColumn = { bg = "NONE" },
+            WinSeparator = { fg = colors.comment },
+            StatusLine = { bg = "NONE" },
+            StatusLineNC = { bg = "NONE" },
+            -- popups de snacks/blink/which-key
+            Pmenu = { bg = colors.menu },
+            PmenuSel = { fg = colors.bg, bg = colors.purple },
+            WhichKeyNormal = { bg = "NONE" },
+            SnacksPickerBorder = { fg = colors.purple },
+            SnacksDashboardHeader = { fg = colors.purple },
+          }
+        end,
+      },
+    },
+    {
       "catppuccin/nvim",
       name = "catppuccin",
       priority = 1000,
@@ -106,7 +137,7 @@ return {
     {
       "LazyVim/LazyVim",
       opts = {
-        colorscheme = "gentleman-kanagawa-blur",
+        colorscheme = "dracula", -- antes: "gentleman-kanagawa-blur"
       },
     },
   },

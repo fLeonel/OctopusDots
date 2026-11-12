@@ -30,9 +30,33 @@ bind-key -n M-g if-shell -F '#{==:#{session_name},scratch}' {
 
 # Tema Dracula
 set -g @plugin 'dracula/tmux'
-set -g @dracula-plugins "git cpu-usage ram-usage"
-set -g @dracula-show-left-icon session
+set -g @dracula-plugins "git cpu-usage ram-usage battery time"
 set -g @dracula-show-powerline true
+set -g @dracula-show-flags true              # muestra si un pane está en zoom, etc.
+set -g @dracula-border-contrast true
+set -g @dracula-refresh-rate 5
+
+# Izquierda: ícono de tmux + nombre de sesión (renómbrala con prefix + $)
+set -g @dracula-show-left-icon "\uebc8 #S"
+set -g @dracula-left-icon-padding 1
+
+# git: rama + símbolo de cambios sin commitear
+set -g @dracula-git-show-current-symbol "\uf00c"
+set -g @dracula-git-show-diff-symbol "\uf448"
+set -g @dracula-git-show-remote-status false
+set -g @dracula-git-no-repo-message ""
+set -g @dracula-git-truncate-length 25
+
+# CPU / RAM / batería
+set -g @dracula-cpu-usage-label "\uf4bc"
+set -g @dracula-ram-usage-label "\uefc5"
+set -g @dracula-battery-label "\U000f0079 "
+set -g @dracula-no-battery-label false        # en desktop sin batería no muestra nada
+
+# Hora: "jue 12 nov  14:35"
+set -g @dracula-show-timezone false
+set -g @dracula-military-time true
+set -g @dracula-time-format "\U000f00ed %a %d %b  \U000f0150 %H:%M"
 
 # --- terminal & key handling ---
 set -g default-terminal "tmux-256color"

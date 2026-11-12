@@ -1,0 +1,41 @@
+layout {
+    tab name="base" focus=true {
+        pane
+    }
+
+    default_tab_template {
+        pane size=1 borderless=true {
+            plugin location="file:~/.config/zellij/plugins/zjstatus.wasm" {
+              // Paleta Dracula: bg #282A36 · purple #BD93F9 · pink #FF79C6 · green #50FA7B
+              //                 cyan #8BE9FD · orange #FFB86C · comment #6272A4 · fg #F8F8F2
+              format_left   "{mode} #[fg=#BD93F9,bold]{tabs}"
+              format_center "#[fg=#FF79C6,bold] {session}"
+              format_right  "{command_git_branch} {datetime}"
+              format_space  ""
+
+              border_enabled  "false"
+              border_char     "─"
+              border_format   "#[fg=#6272A4]{char}"
+              border_position "top"
+
+              mode_normal  "#[bg=#50FA7B] "
+              mode_tmux    "#[bg=#FFB86C] "
+              mode_locked  "#[bg=#FF5555] "
+
+              tab_normal   "#[fg=#6272A4]{index}:{name} "
+              tab_active   "#[fg=#FF79C6,bold,italic]{index}:{name} "
+
+              command_git_branch_command     "git rev-parse --abbrev-ref HEAD"
+              command_git_branch_format      "#[fg=#50FA7B] {stdout} "
+              command_git_branch_interval    "10"
+              command_git_branch_rendermode  "static"
+
+              datetime        "#[fg=#8BE9FD,bold] {format} "
+              datetime_format "%a %d %b  %H:%M"
+              datetime_timezone "America/Guatemala"
+            }
+        }
+        children
+    }
+
+}
