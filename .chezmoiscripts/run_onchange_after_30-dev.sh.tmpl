@@ -1,0 +1,51 @@
+#!/usr/bin/env bash
+# Flutter, OdooLS y código de Odoo para DevRoot. Se re-ejecuta si cambia la versión.
+# odoo-ls: {{ .odooLsVersion }} | odoo: {{ .odooVersion }}
+set -uo pipefail
+eval "$({{ .brewPrefix }}/bin/brew shellenv)"
+
+# --- Flutter ---------------------------------------------------------------
+if [[ ! -d "$HOME/development/flutter" ]]; then
+  echo "==> Clonando Flutter stable en ~/development/flutter"
+  mkdir -p "$HOME/development"
+  git clone --depth 1 -b stable https://github.com/flutter/flutter.git "$HOME/development/flutter"
+fi
+
+# --- TypeScript (OdooLS lo usa para JS/OWL) --------------------------------
+command -v tsserver >/dev/null || npm install -g typescript@6
+
+# --- OdooLS ----------------------------------------------------------------
+LS_VER="{{ .odooLsVersion }}"
+LS_DIR="$HOME/.local/share/odoo-ls"
+{{- if eq .chezmoi.os "darwin" }}
+LS_ASSET="odoo-darwin-{{ if eq .chezmoi.arch "arm64" }}aarch64{{ else }}x86_64{{ end }}-${LS_VER}.tar.gz"
+{{- else }}
+LS_ASSET="odoo-linux-{{ if eq .chezmoi.arch "arm64" }}aarch64{{ else }}x86_64{{ end }}-${LS_VER}.tar.gz"
+{{- end }}
+if [[ "$("$LS_DIR/odoo_ls_server" --version 2>/dev/null)" != *"$LS_VER"* ]]; then
+  echo "==> Instalando OdooLS $LS_VER ($LS_ASSET)"
+  TMP="$(mktemp -d)"
+  BASE="https://github.com/odoo/odoo-ls/releases/download/$LS_VER"
+  curl -fsSL "$BASE/$LS_ASSET" -o "$TMP/ls.tar.gz" && curl -fsSL "$BASE/typeshed.zip" -o "$TMP/typeshed.zip" && {
+    mkdir -p "$LS_DIR" "$HOME/.local/bin"
+    rm -rf "$LS_DIR/typeshed"
+    tar -xzf "$TMP/ls.tar.gz" -C "$LS_DIR"
+    unzip -qo "$TMP/typeshed.zip" -d "$LS_DIR/typeshed"
+    chmod +x "$LS_DIR/odoo_ls_server"
+    ln -sf "$LS_DIR/odoo_ls_server" "$HOME/.local/bin/odoo_ls_server"
+  } || echo "!! No se pudo descargar OdooLS"
+  rm -rf "$TMP"
+fi
+
+# --- Código de Odoo (Core) -------------------------------------------------
+CORE="$HOME/Documents/DevRoot/Odoo/Core/{{ .odooVersion }}"
+mkdir -p "$CORE"
+if [[ ! -d "$CORE/community" ]]; then
+  echo "==> Clonando Odoo {{ .odooVersion }} community (~1.4 GB)"
+  git clone --depth 1 -b {{ .odooVersion }} https://github.com/odoo/odoo.git "$CORE/community"
+fi
+if [[ ! -d "$CORE/enterprise" ]]; then
+  echo "==> Clonando Odoo {{ .odooVersion }} enterprise (requiere acceso SSH a odoo/enterprise)"
+  git clone --depth 1 -b {{ .odooVersion }} git@github.com:odoo/enterprise.git "$CORE/enterprise" \
+    || echo "!! Enterprise falló: configura tu llave SSH en GitHub y corre 'chezmoi apply' de nuevo"
+fi

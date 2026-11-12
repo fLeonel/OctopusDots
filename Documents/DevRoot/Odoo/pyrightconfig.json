@@ -1,0 +1,6 @@
+{
+  "extraPaths": ["Core/19.0/community", "Core/19.0/enterprise"],
+  "exclude": ["Core", "**/__pycache__", "**/node_modules"],
+  "typeCheckingMode": "off",
+  "reportMissingModuleSource": "none"
+}

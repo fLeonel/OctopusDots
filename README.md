@@ -1,78 +1,55 @@
+# 🐙 OctopusDots
 
-# 🐙 OctopusDots - Neovim Configuration
+Mis dotfiles para **Linux (Kali)** y **macOS**, manejados con [chezmoi](https://chezmoi.io).
+Neovim (LazyVim) como editor principal, apps TUI "lazy", Flutter y Odoo 19.
 
-Welcome to the **OctopusDots** repository, a custom **Neovim** configuration designed to maximize productivity and style. This setup aims to create a powerful and developer-friendly Neovim environment for coders of all levels. 😎
-
-## 🚀 **Key Features**
-
-- **Easy installation** with **LazyVim**: This configuration uses the popular **LazyVim** for Neovim plugin management, making plugin installation and management efficient.
-- **Popular plugins** for development in multiple programming languages like Dart, Flutter, Python, and more.
-- **Modern, minimalistic theme** that enhances the visual experience during long coding sessions.
-- **Performance optimization**: With LazyVim, plugins are loaded efficiently to keep Neovim fast and responsive.
-
-## 📂 **Directory Structure**
-
-The repository is organized as follows:
+## 🚀 Instalar en una máquina nueva
 
 ```bash
-OctopusDots/
-├── init.lua          # Main configuration file for Neovim
-├── lazy.lua          # LazyVim configuration (plugin management)
-└── lua/
-    ├── plugins/      # Directory for specific plugin configurations
-    ├── settings/     # General settings such as key mappings, themes, etc.
-    ├── lsp/          # Language Server Protocol (LSP) configurations
-    └── mappings.lua  # Custom key mappings
+# macOS: herramientas de línea de comandos (git, curl)
+xcode-select --install
+
+# chezmoi + aplicar todo
+sh -c "$(curl -fsLS get.chezmoi.io)" -- -b ~/.local/bin init --apply fLeonel/OctopusDots
 ```
 
-## 🛠️ **Prerequisites**
+Te pregunta **nombre y email para git** (se guardan solo en `~/.config/chezmoi/chezmoi.toml`, no en el repo) y luego:
 
-Before using this configuration, make sure you have the following programs installed:
+1. Instala Homebrew (si falta) y todo el [`Brewfile`](Brewfile).
+2. Copia las configs (nvim, zsh, tmux, zellij, lazygit, git + delta, alacritty, atuin, btop…).
+3. Instala oh-my-zsh y TPM.
+4. Clona Flutter stable en `~/development/flutter`.
+5. Instala **OdooLS** (binario + typeshed) en `~/.local/share/odoo-ls`.
+6. Clona Odoo 19 community + enterprise en `~/Documents/DevRoot/Odoo/Core/19.0/`.
 
-1. **Neovim**: The latest version of Neovim.
-2. **Git**: To clone the repository and manage plugins with LazyVim.
-3. **Node.js**: Required for certain functionalities like LSP support for JavaScript and TypeScript.
-4. **Python**: If you're working with Python, make sure Python and `pynvim` are installed.
+> Enterprise necesita tu llave SSH en GitHub con acceso a `odoo/enterprise`.
+> Si falla: `gh auth login` (protocolo SSH) y vuelve a correr `chezmoi apply`.
 
-```bash
-pip install pynvim
-```
+Después: abre `nvim` (lazy.nvim instala los plugins solo) y en tmux `prefix + I`.
 
-## ⚙️ **Installation**
+## 🔁 Día a día
 
-### 1. Clone the repository
+| Quiero… | Comando |
+|---|---|
+| Traer cambios del repo y aplicarlos | `chezmoi update` |
+| Editar una config | `chezmoi edit ~/.zshrc` (o edítala normal y luego `chezmoi re-add`) |
+| Ver qué cambiaría | `chezmoi diff` |
+| Agregar un archivo nuevo | `chezmoi add ~/.config/algo` |
+| Subir cambios | `chezmoi cd` → `git add -A && git commit && git push` |
 
-Clone the repository into your Neovim configuration directory (`~/.config/nvim/`):
+## ⌨️ Atajos principales en Neovim
 
-```bash
-git clone https://github.com/fLeonel/OctopusDots.git ~/.config/nvim
-```
+| Atajo | Qué hace |
+|---|---|
+| `<leader>gg` | lazygit (con delta) |
+| `<leader>y` / `<leader>Y` | yazi en archivo actual / cwd |
+| `<leader>-` | oil |
+| `<leader>td` `ts` `tj` `th` `tp` `tb` | lazydocker, lazysql, lazyjournal, lazyssh, posting, btop |
+| `<leader>F…` | Flutter (run, devices, reload, restart, logs…) |
 
-### 2. Launch Neovim
+## 🧩 Odoo
 
-Open Neovim, and LazyVim will automatically handle the plugin installations:
+`~/Documents/DevRoot/Odoo/` contiene `odools.toml` y `pyrightconfig.json`.
+Clona los repos de Odoo.sh de cada empresa en `DevRoot/Odoo/<Empresa>/` y OdooLS los detecta solo.
 
-```bash
-nvim
-```
-
-### 3. Enjoy your new setup
-
-You can now start using Neovim with all the enhancements and plugins provided by this configuration.
-
-## 🌟 **Highlighted Plugins**
-
-Some key plugins included in this configuration:
-
-- **Telescope**: Fast file and buffer searching, and more.
-- **Treesitter**: Enhanced syntax highlighting for multiple languages.
-- **LSP Config**: Support for various programming languages with autocompletion.
-- **LuaLine**: Highly customizable status bar.
-
-## 🤝 **Contributions**
-
-Feel free to contribute to the project! Any suggestions or improvements are welcome. You can open a **Pull Request** or an **Issue** for any changes you think might be useful.
-
-## 📄 **License**
-
-This project is licensed under the [MIT License](LICENSE).
+Actualizar versiones: cambia `odooVersion` / `odooLsVersion` en `.chezmoi.toml.tmpl`, corre `chezmoi init` y `chezmoi apply`.

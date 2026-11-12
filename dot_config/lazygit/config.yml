@@ -1,0 +1,7 @@
+# delta para los diffs dentro de lazygit
+git:
+  pagers:
+    - colorArg: always
+      pager: delta --dark --paging=never --line-numbers
+os:
+  editPreset: nvim-remote # abrir archivos desde lazygit en el nvim donde estás

@@ -1,0 +1,15 @@
+{{- $name := promptStringOnce . "name" "Nombre para git" "0ctopvs" -}}
+{{- $email := promptStringOnce . "email" "Email para git" -}}
+{{- $brew := "/home/linuxbrew/.linuxbrew" -}}
+{{- if eq .chezmoi.os "darwin" -}}
+{{-   $brew = "/opt/homebrew" -}}
+{{-   if ne .chezmoi.arch "arm64" }}{{ $brew = "/usr/local" }}{{ end -}}
+{{- end -}}
+umask = 0o022
+
+[data]
+  name = {{ $name | quote }}
+  email = {{ $email | quote }}
+  brewPrefix = {{ $brew | quote }}
+  odooVersion = "19.0"
+  odooLsVersion = "1.6.2"

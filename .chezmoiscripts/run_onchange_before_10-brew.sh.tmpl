@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+# Se vuelve a correr cada vez que cambie el Brewfile.
+# Brewfile hash: {{ include "Brewfile" | sha256sum }}
+set -euo pipefail
+
+BREW="{{ .brewPrefix }}/bin/brew"
+if [[ ! -x "$BREW" ]]; then
+  echo "==> Instalando Homebrew"
+  NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+fi
+eval "$("$BREW" shellenv)"
+
+echo "==> brew bundle"
+brew bundle --file "{{ .chezmoi.sourceDir }}/Brewfile" || echo "!! Algunos paquetes fallaron, revisa arriba"

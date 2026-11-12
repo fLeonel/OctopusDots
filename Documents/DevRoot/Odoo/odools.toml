@@ -1,0 +1,14 @@
+#:schema https://github.com/odoo/odoo-ls/releases/download/1.6.2/config_schema.json
+# Config de OdooLS para todo DevRoot/Odoo.
+# Core/19.0 = código de Odoo (solo referencia, no se edita).
+# Cada carpeta de empresa = repos de Odoo.sh con sus módulos.
+
+[[config]]
+name = "default"
+odoo_path = "${workspaceFolder}/Core/19.0/community"
+addons_paths = [
+  "${workspaceFolder}/Core/19.0/community/addons",
+  "${workspaceFolder}/Core/19.0/enterprise",
+  "$autoDetectAddons", # detecta tus repos con módulos (__manifest__.py)
+]
+python_path = "python3"

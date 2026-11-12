@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+# oh-my-zsh + TPM (plugins de tmux). Solo la primera vez.
+set -euo pipefail
+
+if [[ ! -d "$HOME/.oh-my-zsh" ]]; then
+  echo "==> Instalando oh-my-zsh (sin tocar tu .zshrc)"
+  RUNZSH=no CHSH=no KEEP_ZSHRC=yes sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+fi
+
+if [[ ! -d "$HOME/.tmux/plugins/tpm" ]]; then
+  echo "==> Instalando TPM (en tmux: prefix + I para instalar plugins)"
+  git clone --depth 1 https://github.com/tmux-plugins/tpm "$HOME/.tmux/plugins/tpm"
+fi
