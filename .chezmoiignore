@@ -6,3 +6,11 @@ install.sh
 {{ if ne .chezmoi.os "linux" }}
 # nada específico de Linux por ahora
 {{ end }}
+
+# respaldos y basura que nunca deben subirse
+**/*.bak
+**/*.bak-*
+**/*.backup
+**/*.orig
+**/*.swp
+**/.DS_Store
