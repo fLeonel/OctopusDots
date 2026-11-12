@@ -1,6 +1,8 @@
 README.md
 Brewfile
 install.sh
+.config/nvim/.claude
+.config/nvim/.claude/**
 {{ if ne .chezmoi.os "linux" }}
 # nada específico de Linux por ahora
 {{ end }}

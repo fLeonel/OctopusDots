@@ -1,5 +1,6 @@
+{{- if eq .chezmoi.os "darwin" -}}
 #!/usr/bin/env bash
-# Se vuelve a correr cada vez que cambie el Brewfile.
+# Solo macOS (en Kali las apps vienen de apt/brew a mano). Se re-corre si cambia el Brewfile.
 # Brewfile hash: {{ include "Brewfile" | sha256sum }}
 set -euo pipefail
 
@@ -12,3 +13,4 @@ eval "$("$BREW" shellenv)"
 
 echo "==> brew bundle"
 brew bundle --file "{{ .chezmoi.sourceDir }}/Brewfile" || echo "!! Algunos paquetes fallaron, revisa arriba"
+{{ end -}}

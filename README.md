@@ -27,7 +27,17 @@ Te pregunta **nombre y email para git** (se guardan solo en `~/.config/chezmoi/c
 
 Después: abre `nvim` (lazy.nvim instala los plugins solo) y en tmux `prefix + I`.
 
-## 🔁 Día a día
+## 🔁 Día a día (lo único que necesitas)
+
+| Quiero… | Comando |
+|---|---|
+| Subir mis cambios de config a GitHub | `dotpush` o `dotpush "mensaje"` |
+| Bajar los cambios en la otra compu | `dotpull` |
+| Ver qué cambié y no he subido | `dotstatus` |
+
+Regla de oro: **antes de ponerte a editar en una compu, `dotpull`; al terminar, `dotpush`.**
+
+### Comandos de chezmoi (por si acaso)
 
 | Quiero… | Comando |
 |---|---|
