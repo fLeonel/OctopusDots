@@ -1,0 +1,55 @@
+# Ghostty — mismo look que Alacritty (Dracula + FiraCode + transparencia)
+# Docs: https://ghostty.org/docs/config
+
+# --- Fuente ----------------------------------------------------------------
+font-family = FiraCode Nerd Font
+font-size = {{ if eq .chezmoi.os "darwin" }}14{{ else }}12{{ end }}
+
+# --- Ventana ---------------------------------------------------------------
+background-opacity = 0.95
+background-blur = 20
+window-padding-x = 6
+window-padding-y = 4
+window-padding-balance = true
+{{- if eq .chezmoi.os "darwin" }}
+macos-titlebar-style = transparent
+# Option = Alt: necesario para tus atajos de tmux (Alt+g, Alt+v, Alt+d) y de nvim
+macos-option-as-alt = true
+{{- end }}
+
+# --- Cursor ----------------------------------------------------------------
+cursor-style = block
+cursor-style-blink = true
+# no-cursor: que la integración de shell no cambie el cursor a barra
+# ssh-env: al hacer ssh usa xterm-256color (servidores sin terminfo de Ghostty)
+shell-integration-features = no-cursor,ssh-env
+
+# --- Comodidades -----------------------------------------------------------
+mouse-hide-while-typing = true
+copy-on-select = clipboard
+confirm-close-surface = false
+
+# --- Colores: Dracula (idénticos a Alacritty) ------------------------------
+background = #282a36
+foreground = #f8f8f2
+cursor-color = #f8f8f2
+cursor-text = #282a36
+selection-background = #44475a
+selection-foreground = #f8f8f2
+
+palette = 0=#21222c
+palette = 1=#ff5555
+palette = 2=#50fa7b
+palette = 3=#f1fa8c
+palette = 4=#bd93f9
+palette = 5=#ff79c6
+palette = 6=#8be9fd
+palette = 7=#f8f8f2
+palette = 8=#6272a4
+palette = 9=#ff6e6e
+palette = 10=#69ff94
+palette = 11=#ffffa5
+palette = 12=#d6acff
+palette = 13=#ff92df
+palette = 14=#a4ffff
+palette = 15=#ffffff

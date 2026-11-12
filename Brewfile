@@ -49,7 +49,7 @@ brew "python"
 brew "scrcpy"
 
 if OS.mac?
-  cask "alacritty"
+  cask "ghostty"   # terminal en la Mac (config en ~/.config/ghostty/config)
   cask "font-fira-code-nerd-font"
   cask "android-studio"
   cask "docker"
