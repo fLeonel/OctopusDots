@@ -2,6 +2,10 @@
 set -g default-command "{{ .brewPrefix }}/bin/zsh"
 set -g default-shell "{{ .brewPrefix }}/bin/zsh"
 
+# Never inherit an exported FPATH: it pins zsh to a versioned Homebrew path
+# (e.g. Cellar/zsh/5.9) that disappears on upgrade, breaking compinit & co.
+set-environment -gu FPATH
+
 # Carga TPM
 set -g @plugin 'tmux-plugins/tpm'
 
