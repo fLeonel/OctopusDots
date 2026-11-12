@@ -116,9 +116,16 @@ setopt auto_cd auto_pushd pushd_ignore_dups pushdminus interactive_comments
 alias ...='../..'
 alias ....='../../..'
 alias -- -='cd -'
-alias l='ls -lah'
-alias la='ls -lAh'
-alias ll='ls -lh'
+if command -v eza >/dev/null 2>&1; then
+  alias ll='eza -lh --git --icons --group-directories-first'
+  alias la='ll -a'
+  alias l='la'
+  alias lt='eza --tree --level=2 --icons --git-ignore'
+else
+  alias l='ls -lah'
+  alias la='ls -lAh'
+  alias ll='ls -lh'
+fi
 alias md='mkdir -p'
 alias rd='rmdir'
 
