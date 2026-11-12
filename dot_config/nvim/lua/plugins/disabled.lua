@@ -29,10 +29,6 @@ return {
   },
 
   {
-    "sphamba/smear-cursor.nvim",
-    enabled = false,
-  },
-  {
     -- Plugin: claude-code.nvim
     -- URL: https://github.com/greggh/claude-code.nvim
     -- Description: Neovim integration for Claude Code AI assistant
