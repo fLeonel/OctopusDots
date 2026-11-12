@@ -157,25 +157,39 @@ export LG_CONFIG_FILE="$HOME/.config/lazygit/config.yml"
 #   dotpull              -> baja los cambios de GitHub y los aplica aquí
 #   dotstatus            -> muestra qué configs cambiaste y no has subido
 # ---------------------------------------------------------------------------
+# Carpetas donde dotpush busca archivos NUEVOS (los modificados se detectan solos)
+DOT_WATCH=(~/.config/nvim ~/.config/zellij ~/.config/lazygit ~/.config/btop ~/.config/alacritty)
+
 dotpush() {
   local src; src="$(chezmoi source-path)" || return 1
-  chezmoi re-add                    # cambios en archivos que ya se siguen
-  chezmoi add ~/.config/nvim 2> >(grep -v "warning: ignoring" >&2)  # archivos nuevos de nvim
+  chezmoi re-add >/dev/null                                   # archivos modificados (rápido)
+  local nuevos; nuevos=("${(@f)$(chezmoi unmanaged --path-style=absolute $DOT_WATCH 2>/dev/null)}")
+  [[ -n "${nuevos[1]}" ]] && chezmoi add "${nuevos[@]}" >/dev/null  # archivos nuevos
   git -C "$src" add -A
-  if git -C "$src" diff --cached --quiet; then
-    echo "✓ Nada nuevo que subir"
-    return 0
+  local files; files=("${(@f)$(git -C "$src" diff --cached --name-only)}")
+  if [[ -z "${files[1]}" ]]; then
+    echo "✓ Nada nuevo que subir"; return 0
   fi
-  echo "Cambios a subir:"; git -C "$src" diff --cached --stat | tail -20
   local msg="${*:-config: $(date '+%Y-%m-%d %H:%M') desde $(hostname -s)}"
-  git -C "$src" commit -q -m "$msg" && git -C "$src" push -q && echo "✓ Subido a GitHub"
+  local lista="${(j:, :)${files[@]:t}[1,5]}"; (( ${#files} > 5 )) && lista+=" … (+$(( ${#files} - 5 )))"
+  if git -C "$src" commit -q -m "$msg" && git -C "$src" push -q 2>/dev/null; then
+    echo "✓ Subido (${#files}): $lista"
+  else
+    echo "✗ No se pudo subir. Prueba: dotpull y luego dotpush de nuevo"
+    return 1
+  fi
 }
 
 dotpull() {
-  chezmoi update && echo "✓ Configs al día (reinicia nvim / abre otra terminal si hace falta)"
+  if chezmoi update --no-pager >/dev/null; then
+    echo "✓ Configs al día"
+  else
+    echo "✗ Algo falló; corre 'chezmoi update' para ver el detalle"
+    return 1
+  fi
 }
 
 dotstatus() {
-  chezmoi status
-  git -C "$(chezmoi source-path)" status --short
+  local cambios; cambios="$(chezmoi status; git -C "$(chezmoi source-path)" status --short)"
+  [[ -z "$cambios" ]] && echo "✓ Todo sincronizado" || echo "$cambios"
 }
