@@ -4,6 +4,9 @@ return {
   ---@module 'render-markdown'
   ---@type render.md.UserConfig
   opts = {
+    win_options = {
+      concealcursor = { rendered = "nc" },
+    },
     heading = {
       enabled = true,
       sign = true,
