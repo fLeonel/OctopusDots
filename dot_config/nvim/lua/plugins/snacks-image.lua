@@ -1,3 +1,21 @@
+local function resolve_excalidraw(file, src)
+  local base = src:gsub("%.md$", "")
+  if not base:match("%.excalidraw$") then
+    return
+  end
+  local root = vim.fs.root(file, ".obsidian")
+  if not root then
+    return
+  end
+  local direct = root .. "/" .. base .. ".png"
+  if vim.uv.fs_stat(direct) then
+    return direct
+  end
+  local name = vim.fs.basename(base)
+  local plain = name:gsub("%.excalidraw$", "")
+  return vim.fs.find({ name .. ".png", plain .. ".png" }, { path = root, type = "file", limit = 1 })[1]
+end
+
 local function mermaid_block(buf, row)
   local ok, parser = pcall(vim.treesitter.get_parser, buf, "markdown")
   if not ok or not parser then
@@ -65,6 +83,7 @@ return {
   opts = {
     image = {
       enabled = true,
+      resolve = resolve_excalidraw,
       doc = {
         enabled = true,
         inline = true,
