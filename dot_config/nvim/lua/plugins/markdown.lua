@@ -7,6 +7,9 @@ return {
     win_options = {
       concealcursor = { rendered = "nc" },
     },
+    code = {
+      disable = { "mermaid" },
+    },
     heading = {
       enabled = true,
       sign = true,
