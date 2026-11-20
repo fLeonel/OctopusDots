@@ -14,8 +14,8 @@ return {
     legacy_commands = false,
     workspaces = {
       {
-        name = "GentlemanNotes", -- Name of the workspace
-        path = os.getenv("HOME") .. "/.config/obsidian", -- Path to the notes directory
+        name = "RootNotes",
+        path = os.getenv("HOME") .. "/DevRoot/RootNotes",
       },
     },
     completion = {

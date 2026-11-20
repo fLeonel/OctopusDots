@@ -15,6 +15,8 @@ brew "chezmoi"
 
 # Editor y multiplexores
 brew "neovim"
+brew "imagemagick"   # snacks.image en nvim
+brew "mermaid-cli"   # mmdc: diagramas mermaid en nvim
 brew "tmux"
 brew "zellij"
 
